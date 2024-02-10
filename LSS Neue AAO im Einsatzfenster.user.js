@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Neue AAO im Einsatzfenster
 // @namespace    www.leitstellenspiel.de
-// @version      1.1
+// @version      1.2
 // @description  Fügt einen Button zum Erzeugen einer neuen AAO im Einsatzfenster ein.
 // @author       MissSobol
 // @match        https://www.leitstellenspiel.de/missions/*
@@ -15,6 +15,11 @@
     // Funktion zum Ausblenden des Close-Buttons im Einsatzfenster
     function hideCloseButton() {
         parent.eval("parent.eval('lightboxShowClose(false);');");
+    }
+
+    // Funktion zum Neuladen des Einsatzfensters
+    function reloadMissionWindow() {
+        parent.location.reload();
     }
 
     // Wenn wir im Einsatzfenster sind
@@ -38,7 +43,9 @@
     }
     // Wenn wir im AAO-Fenster sind und das AAO-Fenster in einem Einsatzfenster geöffnet wurde
     else if (window.location.pathname.startsWith('/aaos/new') && parent.location.pathname.startsWith('/missions/')) {
-        // Rufe die Funktion zum Ausblenden des Close-Buttons auf
+        // Rufe die Funktionen zum Ausblenden des Close-Buttons und zum Neuladen des Einsatzfensters auf
         hideCloseButton();
+        // Füge einen Eventlistener für das Lightbox-Close-Event hinzu
+        window.addEventListener("unload", reloadMissionWindow);
     }
 })();
